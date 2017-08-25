@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/windowssss.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.mousewheel.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<!--百叶窗-->
+		<div class="boxchch">
+			<p class="chch">察看本页商品</p>
+			<div class="box"></div>
+		</div>
+
+		<!--添加数据-->
+		<script type="text/javascript">
+			$.get("http://h6.duchengjiu.top/shop/api_goods.php?page=1&pagesize=20", function(data) {
+				var obj = data;
+				var html="";
+				for(var i = 0; i < obj.data.length; i++) {
+					html+='<li><div class="op"></div><div class="opp"><p class="opinner">' + obj.data[i].goods_desc + '</p></div><img src="' + obj.data[i].goods_thumb + '"/><p class="pr">价格:' + obj.data[i].price + '</p></li>';
+				}
+				$(".box").append(html);
+				baiye(".box", ".box>li", 1000);
+				var x=0;
+				$(".chch").click(function(){ 
+					$(".box").toggle(1000);
+				})
+			})
+		</script>
+		<script type="text/javascript">
+			function baiye(boxID, box_liclass, voletcity) {
+				var postion = "";
+				console.log(postion);
+				var wi = ($(boxID).width() - $(box_liclass).eq(0).width()) / ($(box_liclass).length - 1);
+				for(var i = 0; i < $(box_liclass).length; i++) {
+					$(box_liclass).eq(i).css({
+						"left": ($(boxID).width() / $(box_liclass).length) * i
+					});
+				}
+				// model 1
+				$(box_liclass).mouseenter(function() {
+					$(box_liclass).stop(true);
+					var index = $(this).index();
+					$(box_liclass).each(function(i) {
+						if(i <= index) {
+							$(this).animate({
+								"left": wi * i
+							}, voletcity);
+						} else {
+							$(this).animate({
+								"left": wi * (i - 1) + $(this).width()
+							}, voletcity);
+						}
+					})
+				})
+				$(box_liclass).mouseleave(function() {
+					$(box_liclass).stop(true);
+					for(var i = 0; i < $(box_liclass).length; i++) {
+						$(box_liclass).eq(i).animate({
+							"left": ($(boxID).width() / $(box_liclass).length) * i
+						}, voletcity);
+					}
+				})
+
+			}
+		</script>
+	</body>
+
+</html>

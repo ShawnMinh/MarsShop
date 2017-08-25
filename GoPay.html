@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>张明火星商城----结算页 </title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/GoPay.css" />
+	</head>
+
+	<body>
+		<!--  顶部     -->
+		<div class="All_top_head">
+			<div class="top_head">
+				<div class="log">
+					<li class="log_p">
+						<a href="#" id="OrderGo">我的订单</a>
+					</li>
+					<li class="log_p">
+						<a href="#">消息</a>
+					</li>
+					<li class="log_p">
+						<a href="#" id="shopcart">购物车</a>
+					</li>
+					<li class="log_p" id="cancel">
+						<a href="#">退出登录</a>
+					</li>
+					<li class="log_p" id="user">
+						<a href="login.html?logid=1">登录</a>
+						<a href="login.html?logid=0">注册</a>
+					</li>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//检测是否可以点 
+			$("#shopcart").click(function() {
+				if(!localStorage.getItem("token")) {
+					window.location.href = "login.html";
+				} else {
+					window.location.href = "buycart.html";
+				}
+			})
+			$("#OrderGo").click(function() {
+				if(!localStorage.getItem("token")) {
+					window.location.href = "login.html";
+				} else {
+					window.location.href = "Order.html";
+				}
+			})
+			if(localStorage.getItem("token")) {
+				$("#cancel").get(0).style.display = "block";
+				$("#user").html("<a href='#'>用户： " + localStorage.getItem('username') + "</a>");
+			}
+			$("#cancel").click(function() {
+				localStorage.clear();
+				window.location.href = "index.html";
+			})
+		</script>
+		<div class="All_top">
+			<div class="top">
+				<div class="logo" title="回到首页">
+					<img src="img/timg.jpg" /> 火星商城
+				</div>
+				<p class="slogan">君当作磐石,妾当作蒲苇.蒲苇纫如丝,磐石无转移</p>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(".logo").mouseenter(function() {
+				$(".logo>img").get(0).src = "img/timg2.jpg";
+			})
+			$(".logo").mouseleave(function() {
+				$(".logo>img").get(0).src = "img/timg.jpg";
+			})
+			$(".logo").click(function() {
+				window.location.href = "index.html"
+			})
+		</script>
+		<!--Pay Logggg-->
+		<div class="payshow">
+			<div class="paylogo">
+				<p>结算页</p>
+			</div>
+			<div class="sche">
+				<div class="scheinner">
+					<div class="scheinnercircle">1</div>
+					<span class="scheinnertext">
+						1.我的购物车
+					</span>
+				</div>
+				<div class="scheinner">
+					<div class="scheinnercircle">2</div>
+					<span class="scheinnertext">
+						2.填写核对订单信息
+					</span>
+				</div>
+				<div class="scheinner">
+					<div class="scheinnercircle">3</div>
+					<span class="scheinnertext">
+						3.成功提交订单
+					</span>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(".scheinnertext").eq(0).css("color", "#caecb6");
+			$(".scheinnercircle").eq(0).css("background-color", "#caecb6");
+			$(".scheinner").eq(0).css("background-color", "#caecb6");
+			$(".scheinnertext").eq(1).css("color", "#7abd54");
+			$(".scheinnercircle").eq(1).css("background-color", "#7abd54");
+			$(".scheinner").eq(1).css("background-color", "#7abd54");
+		</script>
+		<!-- Go Pay 开始-->
+		<div class="CheckOrder">
+			<h2>填写并核对订单信息</h4>
+			<div class="ordermore">
+				<div class="order_infor">
+					<p> 
+						<span>收货人信息</span>
+						<span><a class="AddAdress" href="#">新增收货地址</a></span>
+					</p>
+					
+				</div>
+			</div>
+			<!--去支付 未实现-->
+			<div class="gogopay">
+			提交订单   
+			</div>
+			<span class="summ">
+				合计价格:
+			</span>
+		</div>
+		<!--//提交订单 -->
+		<script type="text/javascript">
+			var xxxxxxxxxobjaress=undefined;
+			$(function(){
+				
+				//获取总价
+				var sum=location.href.split("=");
+				if (sum[1]) {
+					$(".summ").html("合计价格:"+sum[1]+"元");
+				}
+				//清除数据前缓存必要内容
+				var token=localStorage.getItem("token");
+				var username=localStorage.getItem("username");
+				//提交订单 
+				$(".gogopay").click(function(){
+					if (xxxxxxxxxobjaress&&sum[1]) {
+						//获取商品编号
+						var  address_id=xxxxxxxxxobjaress.siblings("input").eq(0).val();
+						console.log("目标id"+address_id);
+						$.ajax({
+						"url": "http://h6.duchengjiu.top/shop/api_order.php?token=" + localStorage.token+"&status=add",
+						"type": "POST",
+						"dataType": "json",
+						"data": {
+					        "address_id": address_id,
+					        "total_prices": sum[1]
+					     },
+					     "success": function(data){
+					     	var data=data;
+					     	if (data.code==0) {
+					     		console.log(data);
+					     		localStorage.clear();
+					     		localStorage.setItem("token",token);
+					     		localStorage.setItem("username",username);
+					     		window.location.href="Order.html#111";
+					     	}else{
+					     		alert(data.message);
+					     	}
+					     }
+					   })
+					}else{
+						alert("请核对");
+					}
+				})
+			})
+	
+		</script>
+		<!--透明背景和add-->
+		<div class="addinfor-op"></div>
+		<div class="addinfor">
+			<div class="addinfor_inner">
+				<form action="">
+				<p id="aiip">新增收货人信息</p>
+				<p>
+				
+					所在地区: 
+					<span class="ti tixx">请输入正确信息</span>
+					<select name="district" class="area district">
+					</select>
+					<select name="city" class="area city">
+					</select>
+					<select name="province" class="area province"  autofocus="autofocus">
+					</select>
+					
+				</p>
+				<p>
+					收货人：
+					<input type="text" name="address_name"  class="name" placeholder="请输入收货人姓名"/>
+					<span class="ti">请输入正确信息</span>
+				</p>
+				<p>
+					详细地址：
+					<input type="text" name="address" class="adresss"  placeholder="请输入收货人地址"/>
+					<span class="ti">请输入正确信息</span>
+				</p>
+				<p>
+					手机号码：
+					<input type="text" name="mobile" class="mobile" placeholder="请输入收货人手机"/>
+					<span class="ti">请输入正确信息</span>
+				</p>
+				<p>
+					<input type="button" id="Saveinfor" value="保存收货人信息" />
+					<input type="button" id="quitSave" value="取消操作" />
+				</p>
+			</form>
+			
+			</div>
+		</div>
+
+		<!--引用地图数据  循环导入 三级联动-->
+		<script src="js/chinamap2.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var china_map=china_map;
+			
+			for (var i = 0; i < china_map.length; i++) {
+				//console.log(china_map[i]) ;
+				$(".province").append("<option value="+china_map[i].name+" >"+china_map[i].name+"</option>");
+			}
+			// 默认选中
+			$(".province").val("");
+//			$(".province").val("北京");
+//			$(".city").val("北京");
+//			$(".district").val("东城区");
+			$(".province").change(function(){ 
+				$(".city").empty();
+				$(".district").empty();
+				provincechg();
+				citychg();
+			})
+			
+			$(".city").change(function(){ 
+				$(".district").empty();
+				provincechg();
+				citychg();
+			})
+			$(".district").change(function(){
+				//$(".city").empty();
+				//$(".district").empty();
+				provincechg();
+				citychg();
+			})
+			var provincechg=function(){
+				var province_str=$(".province").val();
+				for (var i = 0; i < china_map.length; i++) {
+					if (china_map[i].name==province_str) {
+						for (var j = 0; j < china_map[i].city.length; j++) {
+							//console.log(china_map[i].city[j].name) ;
+							$(".city").append("<option value="+china_map[i].city[j].name+" >"+china_map[i].city[j].name+"</option>");
+						}
+					} 
+				}
+				
+			}
+			var citychg= function(){
+				var province_str=$(".province").val();
+				var city_str=$(".city").val();
+				//console.log(province_str,city_str)
+				for (var i = 0; i < china_map.length; i++) {
+					if (china_map[i].name==province_str) {
+						for (var j = 0; j < china_map[i].city.length; j++) {
+							if ( china_map[i].city[j].name==city_str) {
+								for (var k = 0; k <china_map[i].city[j].area.length; k++) {
+									//console.log(china_map[i].city[j].area[k]);
+									$(".district").append("<option value="+china_map[i].city[j].area[k]+" >"+china_map[i].city[j].area[k]+"</option>");
+								}
+							}
+						}	
+					}
+				}
+				
+			}	
+		</script>
+		<!--用户信息输入正则判断-->
+		<script type="text/javascript">
+			//取消添加
+			$("#quitSave").click(function(){ 
+				$(".addinfor-op,.addinfor").hide();
+				document.documentElement.style.overflow="auto";
+			})
+			var lock=1;
+			$(".name").blur(function(){ 
+				var reg=/^[\u4e00-\u9fa5]{2,8}$/;
+				
+				if ($(this).val()==null || !reg.test($(this).val())) {
+					$(this).siblings("span").show();
+					lock=1;
+					return;
+				}
+				lock=0;
+				$(this).siblings("span").hide();
+			})
+			
+			$(".adresss").blur(function(){ 
+				if ($(this).val()==null) {
+					$(this).siblings("span").show();
+					lock=1;
+					return;
+				}
+				lock=0;
+				$(this).siblings("span").hide();
+			})
+			$(".mobile").blur(function(){ 
+			var reg=/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+				if ($(this).val()==null || !reg.test($(this).val())) {
+					$(this).siblings("span").show();
+					lock=1;
+					return;
+				}
+				if ($(".district,.province,.city").val()==null) {
+						lock=1;
+						$(".tixxx").show();
+						return;
+						}else{
+							lock=0;
+							$(".tixxx").hide();
+						}
+				lock=0;
+				$(this).siblings("span").hide();
+			})	
+		</script>
+		
+		<!--提交用户信息-->
+		<script type="text/javascript">		
+		$(function(){ 
+			$("#Saveinfor").click(function(){
+				if (lock==0&& localStorage.token) {   //用户信息输入正确 开始  添加
+					document.documentElement.style.overflow="auto";
+					var data=$("form").serialize();
+					console.log(data);
+					$.ajax({
+						type:"post",
+						url: "http://h6.duchengjiu.top/shop/api_useraddress.php?token=" + localStorage.token + "&status=add",
+						data:data,
+						success:function(data){
+							var data=data;
+							if (data.code==0) {
+								console.log(data.message);
+								$(".addinfor-op,.addinfor").hide();
+								//这里添加一次文档
+								//添加之前全部删除
+								$(".deleteAdress").parent().remove();
+								addnewadress();
+							}	
+						}
+					});
+				}
+			})
+		})
+		</script>
+		
+		<script type="text/javascript">
+			//点击新增地址
+			$(".AddAdress").click(function(){
+				//禁止鼠标滚动 
+				document.documentElement.style.overflow='hidden';
+				$(".addinfor,.addinfor-op").show();
+			})
+		</script>
+		<script type="text/javascript">
+			$(function(){ 
+				addnewadress();
+			})	
+			
+			function addnewadress(){ 
+				if (localStorage.getItem("token")) {
+						$.get("http://h6.duchengjiu.top/shop/api_useraddress.php?token="+localStorage.getItem("token")+"",function(data){
+							var data=data.data;
+							var inforhtml="";
+							for (var i = data.length-1; i >=0 ; i--) {
+								//console.log(data[i]);
+								inforhtml+=`<li>
+											<span class="user_name">${data[i].address_name}</span>
+											<p class="user_infor">地址编号:${data[i].address_id},${data[i].province}${data[i].city}${data[i].district}${data[i].address}, 联系电话${data[i].mobile}</p>
+											<input type="hidden" value=${data[i].address_id} />
+											<span class="deleteAdress">删除</span>
+											</li>
+											
+											`
+							}
+							$(".order_infor").append(inforhtml);
+							//这里把地址添加到文档
+							$(".order_infor>li>.user_name").eq(0).css("border","2px solid rgb(255, 0, 0)").parent().siblings().find(".user_name").css("border","2px solid rgb(0, 0, 0)");
+							xxxxxxxxxobjaress=$(".order_infor>li>.user_name").eq(0);
+							$(".order_infor>li>.user_name").click(function(){
+								//console.log($(this).eq(0).css("border"));
+								$(this).eq(0).css("border","2px solid rgb(255, 0, 0)").parent().siblings().find(".user_name").css("border","2px solid rgb(0, 0, 0)");
+								xxxxxxxxxobjaress=$(this).eq(0);
+							})
+							//点击删除删除一个地址
+							$(".deleteAdress").click(function(){ 
+								var address_id=$(this).siblings("input").get(0).value;
+								console.log(address_id)
+								$(this).parent().remove();
+								$.ajax({
+								type:"get",
+								url: "http://h6.duchengjiu.top/shop/api_useraddress.php?token=" + localStorage.token + "&status=delete&address_id="+address_id+"",
+								datatype:"json",
+								success:function(data){
+									console.log(data.message);
+									$(".user_name").eq(0).css("border","2px solid rgb(255, 0, 0)").parent().siblings().find(".user_name").css("border","2px solid rgb(0, 0, 0)");
+									xxxxxxxxxobjaress=$(".user_name").eq(0);
+								}
+								});
+							})
+						})
+					};
+			}
+		</script>
+		
+		<!--Fotter-->
+		<footer>
+			<div class="contact">
+				<div class="join">
+					<img id="code" src="img/wechatcode.jpg" />
+					<span>扫一扫,加入火星人</span>
+				</div>
+				<p class="cpr">Copyright © 宇宙大爆炸-2017 张明火星商城 amituofo.com All Rights Reserved. 备案号：火星ICP备1232137号-1</p>
+			</div>
+		</footer>
+		<!--浮动-->
+		<div class="fly">
+			<div class="tpp">
+				<input type="text" id="textstr" value="" placeholder="" />
+				<input type="button" id="btn" value="商品搜索 " />
+				<p class="tips">Tips</p>
+
+			</div>
+			<a class="gowater" href="waterwall.html">点我查看全部宇宙装备</a>
+		</div>
+		<span id="gototop"></span>
+		<span class="gototopword">飞到顶部</span>
+		<script type="text/javascript">
+			$(function() {
+				$("#gototop").click(function() {
+					$("html body").animate({
+						"scrollTop": 0
+					}, 1000)
+				})
+
+				//搜索按钮				
+
+				$("#btn").click(function() {
+					var str = $("#textstr").val();
+					//console.log(str);
+
+					$.ajax({
+						type: "get",
+						url: "http://h6.duchengjiu.top/shop/api_goods.php/",
+						data: {
+							"search_text": str
+						},
+						success: function(data) {
+							$(".jump").remove();
+							var obj = data;
+							$(".tips").html(obj.message);
+							console.log("搜索data");
+							console.log(data);
+							var data = data.data;
+							for(var i = 0; i < data.length; i++) {
+								$(".tpp").append('<p class="jump">' + data[i].goods_id + '</p>')
+							}
+
+							$(".jump").click(function() {
+								console.log($(this).html());
+
+								window.location.href = 'detail.html?goods_id=' + $(this).html() + '';
+
+							})
+						}
+					});
+
+				})
+			})
+		</script>
+		
+		<!--以下背景特效 -->
+
+		<script type="text/javascript">
+			var timer = null;
+			//momopa("img/fofw.fw.png") 
+			setInterval(function() {
+				//momoca("img/fofw.fw.png")
+				if(Math.random() > 0.7) {
+					momopa("img/fofw.fw.png")
+				} else {
+					momoca("img/fofw.fw.png");
+				}
+
+			}, 10000)
+
+			function momopa(src) {
+				clearInterval(timer);
+				$("<img src='"+src+"' class='moveXS'/>").css({
+					//					"top": -100,
+					"top": (Math.random() * 900 - 200),
+					"left": (Math.random() * 2000 - 200),
+				}).appendTo($("body"));
+				$(".moveXS").animate({
+					"top": (Math.random() * 900 - 200),
+					"left": (Math.random() * 2000 - 200),
+				}, 4000, function() {
+					$(this).remove();
+				});
+
+				var num = 0;
+				var sca = 0;
+				timer = setInterval(function() {
+					num += 1;
+					sca += 0.1;
+					if(sca >= 100) {
+						clearInterval(timer);
+						return;
+					}
+					//$(".moveXS").css({"transform":"scale("+sca+")","transform":"rotate("+num+"deg)"});
+					$(".moveXS").css("transform", "scale(" + sca + ")" + " " + "rotate(" + num + "deg)");
+					//					$(".moveXS").css("transform","rotate("+num+"deg)");
+				}, 10)
+			}
+
+			function momoca(src) {
+				clearInterval(timer);
+				$("<img src='"+src+"' class='moveXS'/>").css({
+					//					"top": -100,
+					"top": (Math.random() * 700 - 10),
+					"left": (Math.random() * 1600 - 100),
+				}).appendTo($("body"));
+				var raxx = (Math.random() * 1366);
+				$(".moveXS").animate({
+					"top": (Math.random() * 700),
+					"left": (Math.random() * 1600),
+				}, 4000, function() {
+					$(this).remove();
+				});
+
+				var num = 0;
+				var sca = 15;
+				timer = setInterval(function() {
+					num += 1;
+					sca -= 0.06;
+					if(sca <= 0) {
+						clearInterval(timer);
+						return;
+					}
+					//$(".moveXS").css({"transform":"scale("+sca+")","transform":"rotate("+num+"deg)"});
+					$(".moveXS").css("transform", "scale(" + sca + ")" + " " + "rotate(" + num + "deg)");
+					//					$(".moveXS").css("transform","rotate("+num+"deg)");
+				}, 10)
+			}
+		</script>
+		<!--控制背景浮动-->
+		<script type="text/javascript">
+			window.onload = function() {
+				var timer = null;
+				var x = 0;
+				var y = 0;
+				var m = -1;
+				var n = -1;
+				timer = setInterval(function() {
+					$(".All_top").css("background-position-y", x);
+					$("body").css("background-position-x", x);
+					//$("body").css("background-position-y",y);
+					//$("body").stop(true,true);
+					//$("body").animate({"background-position-y":y},100);
+					//$("body").animate({"background-position-x":x},100);
+					if(x >= -1350 && x <= 0) { //1350
+						x += m;
+					}
+					if(x < -1350 || x > 0) {
+						m = -m;
+						x += m;
+					}
+					if(y >= -843 && y <= 0) {
+						y += n;
+					}
+					if(y < -843 || y > 0) {
+						n = -n;
+						y += n;
+					}
+				}, 50);
+			}
+		</script>
+	</body>
+
+</html>

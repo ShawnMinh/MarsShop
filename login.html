@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>张明火星商城----登录/注册</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/login.css" />
+	</head>
+
+	<body>
+		<div class="lgbj" id="log">
+			<img src="img/timg.jpg" />
+			<div class="inner">
+
+				<form action="" method="post">
+					<p class="tel">
+						<input type="text" name="telText" id="telText" placeholder="请输入帐号" />
+						<p class="tips" id="tips1"></p>
+					</p>
+					<p class="tel">
+						<input type="password" name="passtext" id="passtext" placeholder="请输入密码" />
+						<p class="tips" id="tips2"></p>
+					</p>
+					<p class="tel" id="chx">
+						<input type="checkbox" checked="false" name="cbx" id="cbx" value="1" />
+						<span>自动登陆 </span>
+					</p>
+					<p class="tel" id="login">
+						<input type="button" id="btnlogin" value="登录" />
+						<p class="tips" id="tips5"></p>
+					</p>
+				</form>
+
+				<p class="more" id="gores">马上注册成为火星人 ></p>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$("#gores").click(function() {
+				$("#res").css("display", "block");
+				$("#log").css("display", "none");
+			})
+		</script>
+		<script type="text/javascript">
+			$("input[name='telText']").blur(function() {
+				var username = $("input[name='telText']").val();
+				var reg = /^[a-zA-Z][a-zA-Z0-9_]{2,15}$/;
+				if(reg.test(username)) {
+					$("#tips1").html("success");
+					$("#tips1").css("color", "lawngreen");
+				} else {
+					$("#tips1").html("errors:必须传递，3-20位字母数字下滑线");
+					$("#tips1").css("color", "orangered");
+				}
+			})
+
+			$("input[name='passtext']").blur(function() {
+				var passwords = $("input[name='passtext']").val();
+				var reg = /^[\d\w]{6,17}$/;
+				if(reg.test(passwords)) {
+					$("#tips2").html("success");
+					$("#tips2").css("color", "lawngreen");
+				} else {
+					$("#tips2").html("errors:必须传递，最小长度6位");
+					$("#tips2").css("color", "orangered");
+				}
+			})
+			$("#btnlogin").click(function() {
+				var username = $("input[name='telText']").val();
+				var passwords = $("input[name='passtext']").val();
+				console.log(username, passwords);
+				$.ajax({
+					type: "post",
+					url: "http://h6.duchengjiu.top/shop/api_user.php",
+					datatype: "json",
+					"data": {
+						"status": "login",
+						"username": username,
+						"password": passwords
+					},
+					success: function(data) {
+						console.log(data);
+						// www   密码 123456
+						//							console.log($("#cbx").get(0).checked); //原生
+						//							console.log($("#cbx").is(':checked'));  //jq
+						//添加数据到本地储存
+						//使用hash
+						var hash = window.location.hash;
+						var hashcode = hash.split("#");
+						console.log(hash);
+						console.log(typeof hashcode);
+
+						if(data.code == 0) {
+							for(prop in data.data) {
+								if(data.data.hasOwnProperty(prop)) {
+									localStorage.setItem(prop, data.data[prop]);
+								}
+							}
+							if(hashcode[1]) {
+								location.href = "detail.html?goods_id=" + hashcode[1] + "";
+							} else {
+								location.href = "index.html";
+							}
+						} else {
+							$("#tips5").html("errors:帐号或密码错误");
+							$("#tips5").css("color", "orangered");
+						}
+					}
+				});
+
+			})
+			console.log("执行登陆");
+		</script>
+		<!--以上登录 -->
+		<div class="lgbj" id="res">
+			<img src="img/timg.jpg" />
+			<div class="inner">
+
+				<form action="login.html?logid=0" method="post">
+					<p class="tel">
+						<input type="text" name="telres" id="telres" placeholder="请输入帐号" />
+						<p class="tips" id="tips3"></p>
+					</p>
+					<p class="tel">
+						<input type="password" name="passres" id="passres" placeholder="请输入密码" />
+						<p class="tips" id="tips4"></p>
+					</p>
+					<p class="tel" id="login">
+						<input type="button" id="btnres" value="立即注册" />
+					</p>
+				</form>
+				<p class="more" id="golog"><已经是火星人?马上登陆火星</p>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$("#golog").click(function() {
+				$("#log").css("display", "block");
+				$("#res").css("display", "none");
+			})
+		</script>
+
+		<script type="text/javascript">
+			var px = 0;
+			$("input[name='telres']").blur(function() {
+				var username = $("input[name='telres']").val();
+				var reg = /^[a-zA-Z][a-zA-Z0-9_]{2,15}$/;
+				if(reg.test(username)) {
+					$("#tips3").html("success");
+					$("#tips3").css("color", "lawngreen");
+					px = 1;
+				} else {
+					$("#tips3").html("errors:必须传递，3-20位字母数字下滑线");
+					$("#tips3").css("color", "orangered");
+					px = 0;
+				}
+
+				$.ajax({
+					type: "post",
+					url: "http://h6.duchengjiu.top/shop/api_user.php",
+					data: {
+						"status": "check",
+						"username": username
+					},
+					datatype: "json",
+					success: function(code) {
+						if(code.code == 2001) {
+							$("#tips3").html("用户名重复");
+							$("#tips3").css("color", "orangered");
+							px = 0;
+						}
+					}
+				});
+
+			})
+
+			$("input[name='passres']").blur(function() {
+				var passwords = $("input[name='passres']").val();
+				var reg = /^[\d\w]{6,17}$/;
+				if(reg.test(passwords)) {
+					$("#tips4").html("success");
+					$("#tips4").css("color", "lawngreen");
+					px = 1;
+				} else {
+					$("#tips4").html("errors:必须传递，最小长度6位");
+					$("#tips4").css("color", "orangered");
+					px = 0;
+				}
+			})
+			$("#btnres").click(function() {
+				console.log("XXX");
+				var username = $("input[name='telres']").val();
+				var passwords = $("input[name='passres']").val();
+				console.log(username, passwords);
+				$.ajax({
+					type: "post",
+					url: "http://h6.duchengjiu.top/shop/api_user.php",
+					"data": {
+						"status": "register",
+						"username": username,
+						"password": passwords
+					},
+					datatype: "json",
+					success: function(data) {
+						console.log("这里是注册返回");
+						console.log(data);
+						//window.location.href="login.html?logid=0"
+						//登录成功跳转
+						if(px == 1) {
+							$("#res").css("display", "none");
+							$("#log").css("display", "block");
+							$("#telText").val(username);
+							$("#passtext").val(passwords);
+						} else {
+							alert("请检查");
+						}
+					}
+				});
+
+			})
+			console.log("执行注册");
+		</script>
+		<!--以上注册-->
+		<script type="text/javascript">
+			$(".lgbj").height(650);
+			var str = window.location.search;
+			console.log(str);
+			console.log("检索url 完成");
+			var strcode = str.split("=");
+			if(strcode[1] == 0) {
+				$("#res").css("display", "block");
+				$("#log").css("display", "none");
+			} else {
+				$("#res").css("display", "none");
+				$("#log").css("display", "block");
+			}
+
+			if(localStorage.getItem("token")) {
+				var num = 2;
+				var timer = null;
+				$("body").html("用户已登录  3s后跳转");
+				timer = setInterval(function() {
+					console.log(num);
+					if(num <= 0) {
+						window.location.href = "index.html";
+						clearInterval(timer);
+					};
+					$("body").html('用户已登录 ' + num + 's后跳转');
+					num--;
+				}, 1000);
+
+			}
+			console.log("-------", localStorage.getItem("uasername"));
+
+			//localStorage.getItem("checked")=$("#cbx").get(0).checked="checked";
+			//			if (localStorage.getItem("checked")) {
+			//				if (localStorage.getItem("username")!=null && localStorage.getItem("token")!=null) {
+			//				$("#telText").val(localStorage.getItem("username"));
+			//				$("#passtext").val(localStorage.getItem("token"));
+			//				}
+			//$("#cbx").get(0).checked="checked";
+			//			}
+		</script>
+		<!--以下背景特效 -->
+		<script type="text/javascript">
+			$("img").mouseenter(function(){
+				$("img").get(0).src="img/timg2.jpg";
+				$("img").get(1).src="img/timg2.jpg";
+			})
+			$("img").mouseleave(function(){
+				$("img").get(0).src="img/timg.jpg";
+				$("img").get(1).src="img/timg.jpg";
+			})
+		</script>
+		
+		<script type="text/javascript">
+			document.documentElement.style.overflow = "hidden";
+			var timer = null;
+			momopa("img/fofw.fw.png") 
+			setInterval(function() {
+				//momoca("img/fofw.fw.png")
+				if(Math.random() > 0.7) {
+					momopa("img/fofw.fw.png")
+				} else {
+					momoca("img/fofw.fw.png");
+				}
+
+			}, 6000)
+
+			function momopa(src) {
+				clearInterval(timer);
+				$("<img src='"+src+"' class='moveXS'/>").css({
+					//					"top": -100,
+					"top": (Math.random() * 900 - 200),
+					"left": (Math.random() * 2000 - 200),
+				}).appendTo($("body"));
+				$(".moveXS").animate({
+					"top": (Math.random() * 900 - 200),
+					"left": (Math.random() * 2000 - 200),
+				}, 4000, function() {
+					$(this).remove();
+				});
+
+				var num = 0;
+				var sca = 0;
+				timer = setInterval(function() {
+					num += 1;
+					sca += 0.1;
+					if(sca >= 100) {
+						clearInterval(timer);
+						return;
+					}
+					//$(".moveXS").css({"transform":"scale("+sca+")","transform":"rotate("+num+"deg)"});
+					$(".moveXS").css("transform", "scale(" + sca + ")" + " " + "rotate(" + num + "deg)");
+					//					$(".moveXS").css("transform","rotate("+num+"deg)");
+				}, 10)
+			}
+
+			function momoca(src) {
+				clearInterval(timer);
+				$("<img src='"+src+"' class='moveXS'/>").css({
+					//					"top": -100,
+					"top": (Math.random() * 700 - 10),
+					"left": (Math.random() * 1600 - 100),
+				}).appendTo($("body"));
+				var raxx = (Math.random() * 1366);
+				$(".moveXS").animate({
+					"top": (Math.random() * 700),
+					"left": (Math.random() * 1600),
+				}, 4000, function() {
+					$(this).remove();
+				});
+
+				var num = 0;
+				var sca = 15;
+				timer = setInterval(function() {
+					num += 1;
+					sca -= 0.06;
+					if(sca <= 0) {
+						clearInterval(timer);
+						return;
+					}
+					//$(".moveXS").css({"transform":"scale("+sca+")","transform":"rotate("+num+"deg)"});
+					$(".moveXS").css("transform", "scale(" + sca + ")" + " " + "rotate(" + num + "deg)");
+					//					$(".moveXS").css("transform","rotate("+num+"deg)");
+				}, 10)
+			}
+		</script>
+		<!--控制背景浮动-->
+		<script type="text/javascript">
+			window.onload = function() {
+				var timer = null;
+				var x = 0;
+				var y = 0;
+				var m = -1;
+				var n = -1;
+				timer = setInterval(function() {
+					//$(".All_top").css("background-position-y",x);
+					$("body").css("background-position-x", x);
+					$("body").css("background-position-y", y);
+					//$("body").stop(true,true);
+					//$("body").animate({"background-position-y":y},100);
+					//$("body").animate({"background-position-x":x},100);
+					if(x >= -1350 && x <= 0) { //1350
+						x += m;
+					}
+					if(x < -1350 || x > 0) {
+						m = -m;
+						x += m;
+					}
+					if(y >= -843 && y <= 0) {
+						y += n;
+					}
+					if(y < -843 || y > 0) {
+						n = -n;
+						y += n;
+					}
+				}, 50);
+			}
+		</script>
+	</body>
+
+</html>

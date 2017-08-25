@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>张明火星商城----首页</title>
+		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/windowssss.css" />
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<!--  顶部     -->
+		<div class="All_top_head">
+			<div class="top_head">
+				<div class="log">
+					<li class="log_p">
+						<a href="#" id="OrderGo">我的订单</a>
+					</li>
+					<li class="log_p">
+						<a href="#">消息</a>
+					</li>
+					<li class="log_p">
+						<a href="#" id="shopcart">购物车</a>
+					</li>
+					<li class="log_p" id="cancel">
+						<a href="#">退出登录</a>
+					</li>
+					<li class="log_p" id="user">
+						<a href="login.html?logid=1">登录</a>
+						<a href="login.html?logid=0">注册</a>
+					</li>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//购物车开始 
+			$("#shopcart").click(function() {
+				if(!localStorage.getItem("token")) {
+					window.location.href = "login.html";
+				} else {
+					window.location.href = "buycart.html";
+				}
+			})
+			$("#OrderGo").click(function() {
+				if(!localStorage.getItem("token")) {
+					window.location.href = "login.html";
+				} else {
+					window.location.href = "Order.html";
+				}
+			})
+			if(localStorage.getItem("token")) {
+				$("#cancel").get(0).style.display = "block";
+				$("#user").html("<a href='#'>用户： " + localStorage.getItem('username') + "</a>");
+			}
+			$("#cancel").click(function() {
+				localStorage.clear();
+				window.location.href = "index.html";
+			})
+		</script>
+		<div class="All_top">
+			<div class="top">
+				<div class="logo" title="回到首页">
+					<img src="img/timg.jpg" /> 火星商城
+				</div>
+				<p class="slogan">征服宇宙必备装备一站购齐!</p>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(".logo").mouseenter(function() {
+				$(".logo>img").get(0).src = "img/timg2.jpg";
+			})
+			$(".logo").mouseleave(function() {
+				$(".logo>img").get(0).src = "img/timg.jpg";
+			})
+			$(".logo").click(function() {
+				window.location.href = "index.html"
+			})
+		</script>
+
+		<!--  导航     -->
+		<header>
+			<ul id="nav">
+				<!--<li><a href="#"></a></li>-->
+			</ul>
+		</header>
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				//页面导航
+				$.get("http://h6.duchengjiu.top/shop/api_cat.php", function(data) {
+					var obj = data;
+					for(var i = 0; i < obj.data.length; i++) {
+						$("#nav").append('<li><a href="list.html?cat_id=' + obj.data[i].cat_id + '">' + obj.data[i].cat_name + '</a></li>');
+					}
+				})
+			})
+		</script>
+		<!-- 轮播  -->
+		<div class="banner">
+			<div class="lun">
+				<div class="left">
+					<</div>
+						<div class="right">></div>
+						<ul class="point">
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+
+				</div>
+			</div>
+			<script type="text/javascript">
+				window.onload = function() {
+
+					$.get("http://h6.duchengjiu.top/shop/api_position.php", function(data) {
+						var obj = data;
+
+						$.ajax({
+							type: "get",
+							url: "http://h6.duchengjiu.top/shop/api_ad.php",
+							data: {
+								position_id: obj.data[0].position_id
+							},
+							success: function(data) {
+								var PicData = data;
+								console.log(data);
+								for(var i = 0; i < PicData.data.length; i++) {
+									$(".lun").append('<img class="adb" src="' + PicData.data[i].url + '" />');
+								}
+								var timer = null;
+								var num = 0;
+								var velocity = 2000;
+								//$(".adb").eq(0).css("opacity", 1);
+								$(".adb").eq(num).animate({
+									"opacity": 1
+								}, velocity)
+								$(".point>li").eq(num).css("background-color", "orange").siblings("li").css("background-color", "#FFFFFF");
+								timer = setInterval(function() {
+									num++;
+									if(num >= $(".adb").length) {
+										num = 0;
+									}
+									$(".adb").eq(num).animate({
+										"opacity": 1
+									}, velocity).siblings(".adb").animate({
+										"opacity": 0
+									}, velocity);
+									$(".point>li").eq(num).css("background-color", "orange").siblings("li").css("background-color", "#FFFFFF");
+								}, velocity);
+
+								$(".left,.right,.point").mouseenter(function() {
+									$(".left,.right,.point").stop(true, false);
+									$(".left,.right,.point").fadeIn();
+									clearInterval(timer);
+								})
+								$(".adb").mouseenter(function() {
+									$(".left,.right,.point").finish();
+									$(".left,.right,.point").fadeIn();
+									clearInterval(timer);
+								})
+								$(".adb").mouseleave(function() {
+									$(".left,.right,.point").finish();
+									$(".left,.right,.point").fadeOut();
+									timer = setInterval(function() {
+										num++;
+										if(num >= $(".adb").length) {
+											num = 0;
+										}
+										$(".adb").eq(num).animate({
+											"opacity": 1
+										}, velocity).siblings(".adb").animate({
+											"opacity": 0
+										}, velocity);
+										$(".point>li").eq(num).css("background-color", "orange").siblings("li").css("background-color", "#FFFFFF");
+									}, velocity);;
+								})
+								$(".left").click(function() {
+									num--;
+									if(num < 0) {
+										num = $(".adb").length - 1;
+									}
+									console.log(num);
+									$(".adb").eq(num).animate({
+										"opacity": 1
+									}, 10).siblings(".adb").animate({
+										"opacity": 0
+									}, 10);
+									$(".point>li").eq(num).css("background-color", "orange").siblings("li").css("background-color", "#FFFFFF");
+
+								})
+								$(".right").click(function() {
+									num++;
+									if(num >= $(".adb").length) {
+										num = 0;
+									}
+									$(".adb").eq(num).animate({
+										"opacity": 1
+									}, 10).siblings(".adb").animate({
+										"opacity": 0
+									}, 10);
+									$(".point>li").eq(num).css("background-color", "orange").siblings("li").css("background-color", "#FFFFFF");
+								})
+								$(".point>li").mousemove(function() {
+									num = $(this).index();
+									$(".adb").eq(num).animate({
+										"opacity": 1
+									}, 10).siblings(".adb").animate({
+										"opacity": 0
+									}, 10);
+									$(".point>li").eq(num).css("background-color", "orange").siblings("li").css("background-color", "#FFFFFF");
+								})
+							}
+							//					async:false
+						});
+					})
+				}
+			</script>
+
+			
+			<!--热门-->
+			<section>
+				<div class="title">
+					<span>精品好货</span>
+				</div>
+				<ul class="goodUL" id="GoodUL">
+
+				</ul>
+			</section>
+			<script type="text/javascript">
+				$(function() {
+					//热门
+					$.get("http://h6.duchengjiu.top/shop/api_goods.php", function(data) {
+						var obj = data;
+						for(var i = 0; i < obj.data.length; i++) {
+							$("#GoodUL").append('<a href="detail.html?goods_id=' + obj.data[i].goods_id + '"><li><div class="op"></div><div class="opp"><p class="opinner">' + obj.data[i].goods_desc + '</p></div><img src="' + obj.data[i].goods_thumb + '"/><p>' + obj.data[i].goods_name + '<p class="pr">价格:' + obj.data[i].price + '</p></li></a>');
+						}
+						$("#GoodUL>a").mouseenter(function() {
+							$("#GoodUL>li").css("cursor", "pointer");
+							console.log($(this).children());
+							$(this).children().children().css("display", "block");
+							$(this).find(".opinner").css("display", "block");
+						})
+
+						$("#GoodUL>a").mouseleave(function() {
+							$(".op,.opp,.opinner").css("display", "none");
+						})
+					})
+				})
+			</script>
+			<!--浮动-->
+			<div class="fly">
+				<div class="tpp">
+					<input type="text" id="textstr" value="" placeholder="" />
+					<input type="button" id="btn" value="商品搜索 " />
+					<p class="tips">Tips</p>
+
+				</div>
+				<a class="gowater" href="waterwall.html">点我查看全部宇宙装备</a>
+			</div>
+			<span id="gototop"></span>
+			<span class="gototopword">飞到顶部</span>
+			<script type="text/javascript">
+				$(function() {
+					$("#gototop").click(function() {
+						$("html body").animate({
+							"scrollTop": 0
+						}, 1000)
+					})
+
+					//搜索按钮				
+
+					$("#btn").click(function() {
+						var str = $("#textstr").val();
+						//console.log(str);
+
+						$.ajax({
+							type: "get",
+							url: "http://h6.duchengjiu.top/shop/api_goods.php/",
+							data: {
+								"search_text": str
+							},
+							success: function(data) {
+								$(".jump").remove();
+								var obj = data;
+								$(".tips").html(obj.message);
+								console.log("搜索data");
+								console.log(data);
+								var data = data.data;
+								for(var i = 0; i < data.length; i++) {
+									$(".tpp").append('<p class="jump">' + data[i].goods_id + '</p>')
+								}
+
+								$(".jump").click(function() {
+									console.log($(this).html());
+
+									window.location.href = 'detail.html?goods_id=' + $(this).html() + '';
+
+								})
+							}
+						});
+
+					})
+				})
+			</script>
+			<!--Fotter-->
+			<footer>
+				<div class="contact">
+					<div class="join">
+						<img id="code" src="img/wechatcode.jpg" />
+						<span>扫一扫,加入火星人</span>
+					</div>
+					<p class="cpr">Copyright © 宇宙大爆炸-2017 张明火星商城 amituofo.com All Rights Reserved. 备案号：火星ICP备1232137号-1</p>
+				</div>
+			</footer>
+			<!--以下背景特效 -->
+
+			<script type="text/javascript">
+				var timer = null;
+			momopa("img/fofw.fw.png") 
+			setInterval(function() {
+				//momoca("img/fofw.fw.png")
+				if(Math.random() > 0.7) {
+					momopa("img/fofw.fw.png")
+				} else {
+					momoca("img/fofw.fw.png");
+				}
+
+			}, 7000)
+
+			function momopa(src) {
+				clearInterval(timer);
+				$("<img src='"+src+"' class='moveXS'/>").css({
+					//					"top": -100,
+					"top": (Math.random() * 900 - 200),
+					"left": (Math.random() * 2000 - 200),
+				}).appendTo($("body"));
+				$(".moveXS").animate({
+					"top": (Math.random() * 900 - 200),
+					"left": (Math.random() * 2000 - 200),
+				}, 4000, function() {
+					$(this).remove();
+				});
+
+				var num = 0;
+				var sca = 0;
+				timer = setInterval(function() {
+					num += 1;
+					sca += 0.1;
+					if(sca >= 100) {
+						clearInterval(timer);
+						return;
+					}
+					//$(".moveXS").css({"transform":"scale("+sca+")","transform":"rotate("+num+"deg)"});
+					$(".moveXS").css("transform", "scale(" + sca + ")" + " " + "rotate(" + num + "deg)");
+					//					$(".moveXS").css("transform","rotate("+num+"deg)");
+				}, 10)
+			}
+
+			function momoca(src) {
+				clearInterval(timer);
+				$("<img src='"+src+"' class='moveXS'/>").css({
+					//					"top": -100,
+					"top": (Math.random() * 700 - 10),
+					"left": (Math.random() * 1600 - 100),
+				}).appendTo($("body"));
+				var raxx = (Math.random() * 1366);
+				$(".moveXS").animate({
+					"top": (Math.random() * 700),
+					"left": (Math.random() * 1600),
+				}, 4000, function() {
+					$(this).remove();
+				});
+
+				var num = 0;
+				var sca = 15;
+				timer = setInterval(function() {
+					num += 1;
+					sca -= 0.06;
+					if(sca <= 0) {
+						clearInterval(timer);
+						return;
+					}
+					//$(".moveXS").css({"transform":"scale("+sca+")","transform":"rotate("+num+"deg)"});
+					$(".moveXS").css("transform", "scale(" + sca + ")" + " " + "rotate(" + num + "deg)");
+					//					$(".moveXS").css("transform","rotate("+num+"deg)");
+				}, 10)
+			}
+			</script>
+			<!--控制背景浮动-->
+			<script type="text/javascript">
+				$(function() {
+					var timer = null;
+					var x = 0;
+					var y = 0;
+					var m = -1;
+					var n = -1;
+					timer = setInterval(function() {
+						$(".All_top").css("background-position-y", x);
+						$("body").css("background-position-x", x);
+						//$("body").css("background-position-y",y);
+						//$("body").stop(true,true);
+						//$("body").animate({"background-position-y":y},100);
+						//$("body").animate({"background-position-x":x},100);
+						if(x >= -1350 && x <= 0) { //1350
+							x += m;
+						}
+						if(x < -1350 || x > 0) {
+							m = -m;
+							x += m;
+						}
+						if(y >= -843 && y <= 0) {
+							y += n;
+						}
+						if(y < -843 || y > 0) {
+							n = -n;
+							y += n;
+						}
+					}, 50);
+				})
+			</script>
+	</body>
+
+</html>

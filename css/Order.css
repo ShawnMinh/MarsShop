@@ -1,0 +1,72 @@
+.succ{
+	width: 85%;
+	margin: 0 auto;
+	display: block;
+	text-align:  center;
+	font-size: 100px;
+	border-bottom: 1px solid #FF8C00;
+	color: #FF8C00;
+}
+.orderX{
+	width: 85%;
+	height: auto;
+	margin: 0px auto;
+	margin-bottom: 200px;
+	position: relative;
+}
+.tatatit{
+	width: 85%;
+	height: 50px;
+	margin: 10px auto;
+	color: #FFF;
+	text-align: center;
+	border: 1px solid #F0F8FF;
+	line-height: 50px;
+}
+.orderX li{
+	width: 10%;
+	float: left;
+	list-style: none;
+}
+.orderX .tittt{
+	width: 38%;
+}
+.orderitem{
+	width: 85%;
+	height: auto;
+	margin: 10px auto;
+	color: #FFF;
+	text-align: center;
+	border-bottom: 1px solid #F0F8FF;
+	line-height: 50px;	
+}
+.orderitem p{
+	text-align: left;
+	text-indent:5%;
+	border: none;
+}
+.orderitem  .or{
+	width: 100%;
+	height: 120px;
+}
+.orderitem .or img{
+	height: 120px;
+	width:30%;
+	float: left;
+	margin-left: 10px;
+	transition: all 0.2s; 
+}
+.orderitem .or img:hover{
+	transform: scale(1.2);
+}
+.orderitem  .or  p{
+	display: block;
+	width:50%;
+	height: 100%;
+	line-height: 20px;
+	float: left;
+	word-break: break-all;
+	word-wrap: break-word;
+	margin-left: 10px;
+	overflow: hidden;
+}

@@ -1,0 +1,74 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+body{
+	background-image:url(../img/timg1.jpg);
+}
+
+.lgbj {
+	width: 100%;
+	overflow: hidden;
+}
+
+
+img {
+	display: block;
+	width: 10%;
+	height: 130px;
+	margin: 80px auto;
+	margin-top: 200px;
+}
+
+.inner{
+	width: 50%;
+	margin: 0px auto;
+	color: #FFFFFF;
+}
+ .inner p {
+	font-size:1em;
+	width: 300px;
+	margin: 10px auto;
+	margin-bottom: 0px;
+}
+ .inner .tips{
+ 	margin: 0 auto;
+ }
+ .inner p input{
+ 	width:100%;
+ 	height: 25px;
+ 	background-color: transparent;
+ 	color: #FFFFFF;
+ 	border: none;
+ 	border-bottom:1px solid #FFFFFF ;
+	cursor: pointer;
+ }
+#chx input{
+	width: 10%;
+	height: 20px;
+	float: left;
+}
+#chx span{
+	float: left;
+	display: block;
+	text-align: center;
+}
+
+.more{
+	margin: 10px auto;
+	text-align: center;
+	cursor: pointer;
+}
+.more:hover{
+	color: #FF8C00;
+}
+/*以上登陆*/
+
+/*背景特效*/
+.moveXS{
+	display: block;
+	width: 100px;
+	height: 100px;
+	position: fixed;
+	z-index: -110;
+}

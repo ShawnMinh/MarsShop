@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/login.css"/>
+	</head>
+	<body>
+		<div id="lgbj">
+				<img src="img/timg.jpg" />
+				<div class="inner">
+					<p class="tel">
+						<input type="text" name="telText" id="telText" value=""  placeholder="输入手机号"/>
+					</p>
+					<p class="tel">
+						<input type="text" name="yzmText" id="yzmText" value=""  placeholder="输入验证码"/>
+						<input type="button" name="btn" id="btn" value="获取验证码" />
+					</p>
+					<p class="tel" id="chx"> 
+						<input type="checkbox" name="cbx" id="cbx" value="1" />
+						 <span>自动登陆 </span>
+					</p>
+					<p class="tel" id="login">
+						<input type="button" name="btnlogin" id="btnlogin" value="登录" />
+					</p>
+					<p  id="more">更多登录方式 ></p>
+				</div>
+			</div>
+	
+		<script type="text/javascript">
+			$("#lgbj").height(window.innerHeight);
+			var str=window.location.search;
+			console.log(str);
+			var strcode=str.split("=");
+			if (strcode[1]==0) 
+			{
+				
+			}else
+			{
+				
+			}
+		</script>
+	</body>
+</html>

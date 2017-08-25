@@ -1,0 +1,198 @@
+
+
+/*开始验证订单*/
+.CheckOrder{
+	width: 85%;
+	margin: 10px auto;
+	margin-bottom: 100px;
+	position: relative;
+}
+.CheckOrder h2{
+	color: #FFF;
+}
+.ordermore{
+	width:99%;
+	margin:20px auto;
+	border:1px solid #D0DEE5;
+}
+.ordermore .order_infor{
+	width: 90%;
+	margin:10px auto;
+}
+.ordermore .order_infor p{
+	display: block;
+	height: 40px;
+	width: 100%;
+	line-height: 40px;
+	font-size: 1em;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+.ordermore .order_infor p a{
+	display: block;
+	height: 40px;
+	width: 100px;
+	line-height: 40px;
+	font-size:0.2em;
+	float: right;
+	color: aqua;
+	text-decoration: none;
+}
+.ordermore .order_infor p a:hover{
+	
+	color: #FF8C00;
+}
+.ordermore .order_infor li{
+	display: block;
+	height: 34px;
+	width: 95%;
+	margin: 10px auto;
+	font-size: 1em;
+	color: #FFFFFF;	
+}
+.ordermore .order_infor li .user_name{
+	display: block;
+	height: :32px;
+	width: 15%;
+	border: 2px solid red;
+	font-size: 1em;
+	text-align: center;
+	line-height: 32px;
+	float: left;
+	cursor: pointer;
+}
+.ordermore .order_infor li .user_infor{
+	display: block;
+	float: left;
+	height:34px ;
+	width: 70%;
+	font-size: 0.8em;
+	line-height: 33px;
+	margin-left: 5%;
+	color: #FFF;
+}
+.ordermore .order_infor li .deleteAdress{
+	float: right;
+	width: 40px;
+	height: 40px;
+	color: #D0DEE5;
+	cursor: pointer;
+}
+.ordermore .order_infor li .deleteAdress:hover{
+	color: #F0F8FF;
+}
+
+
+.addinfor-op{
+	display: none;
+	width:100%;
+	height:100%;
+	background-color: #000000;
+	opacity: 0.2;
+	position:fixed;
+	top: 0px;
+}
+.addinfor{
+	display: none;
+	width:100%;
+	height:100%;
+	position:fixed;
+	top: 0px;
+}
+.addinfor .addinfor_inner{
+	z-index: 99999;
+	width: 40%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -150px;
+	margin-left: -20%;
+	background-color: aliceblue;
+}
+.addinfor .addinfor_inner p{
+	height: 40px;
+	width: 90%;
+	font-size: 1em;
+	line-height: 40px;
+	text-align: left;
+	margin: 0px auto;
+	position: relative;
+}
+.addinfor .addinfor_inner input{
+	height: 30px;
+	width: 50%;
+	border: none;
+	position: absolute;
+	left: 25%;
+}
+.addinfor .addinfor_inner span{
+	display: none;
+	height: 40px;
+	font-size: 0.5em;
+	line-height: 40px;
+	float: right;
+	color: #FF0000;
+}
+.addinfor .addinfor_inner .tixx{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+
+.addinfor .addinfor_inner #Saveinfor{
+	width: 30%;
+	 color: #FFF;
+	 border-radius: 20px;
+	 border: 1px solid #FF8C00;
+	 background-color: #FF8C00;
+}
+.addinfor .addinfor_inner #quitSave{
+	width: 20%;
+	color: #FFF;
+	border-radius: 20px;
+	border: 1px solid #D0DEE5;
+	background-color: #D0DEE5;
+	margin-left: 250px;
+}
+
+.addinfor .addinfor_inner .areaa{
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	left: 0px;
+}
+.addinfor .addinfor_inner .area{
+	display: block;
+	text-align: center; 
+	line-height:40px ;
+	float: right;
+	width: 20%;
+	margin: 10px auto;
+	position: relative;
+	left: -18%;
+}
+.gogopay{
+	width: 18%;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	font-size: 1.5em;
+	color: #F0F8FF;
+	float: right;
+	background-color: #FF8C00;
+	cursor: pointer;
+}
+.gogopay:hover{
+	color: #FFFFFF;
+}
+.summ{
+	float: right;
+	width: 18%;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	font-size: 1.2em;
+	color: #FF8C00;
+	margin-right:10%;
+	cursor: pointer;
+}
