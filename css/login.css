@@ -6,6 +6,35 @@ body{
 	background-image:url(../img/timg1.jpg);
 }
 
+@media only screen  and (max-width:432px) {
+	img {
+		width: 60%;
+	}
+	.inner p {
+		width: 100px;
+	}
+}
+
+@media only screen and (max-width: 992px) {
+	img {
+		width: 40%;
+	}
+	.inner p {
+		width: 200px;
+	}
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1800px) {
+	img {
+		width: 10%;
+	}
+	.inner p {
+		width: 300px;
+	}
+}
+
+
+
 .lgbj {
 	width: 100%;
 	overflow: hidden;
